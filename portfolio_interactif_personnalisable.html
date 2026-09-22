@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="doc-title">Alexandre Martin - Portfolio Fullstack & UI/UX</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: 'var(--color-primary-50, #eff6ff)',
+                            100: 'var(--color-primary-100, #dbeafe)',
+                            500: 'var(--color-primary-500, #3b82f6)',
+                            600: 'var(--color-primary-600, #2563eb)',
+                            700: 'var(--color-primary-700, #1d4ed8)',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --accent-hex: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: rgba(59, 130, 246, 0.15);
+        }
+
+        .bg-accent { background-color: var(--accent-hex) !important; }
+        .bg-accent-light { background-color: var(--accent-light) !important; }
+        .text-accent { color: var(--accent-hex) !important; }
+        .border-accent { border-color: var(--accent-hex) !important; }
+        .focus-ring-accent:focus {
+            --tw-ring-color: var(--accent-hex);
+            border-color: var(--accent-hex);
+        }
+        
+        /* Glassmorphism utils */
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.80);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hex);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-hex) 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Toast Animation */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .toast-enter {
+            animation: slideInRight 0.3s ease-out forwards;
+        }
+        .toast-exit {
+            animation: fadeOut 0.3s ease-in forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased transition-colors duration-300 selection:bg-blue-500 selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300" id="main-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#hero" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300" id="logo-icon">
+                        AM
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white" id="nav-brand-name">
+                        Alexandre<span class="text-accent" id="nav-brand-dot">.</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1 glass px-6 py-2 rounded-full shadow-sm">
+                    <a href="#about" class="px-4 py-2 text-sm font-medium hover:text-accent transition-colors">À Propos</a>
+                    <a href="#skills" class="px-4 py-2 text-sm font-medium hover:text-accent transition-colors">Compétences</a>
+                    <a href="#projects" class="px-4 py-2 text-sm font-medium hover:text-accent transition-colors">Projets</a>
+                    <a href="#experience" class="px-4 py-2 text-sm font-medium hover:text-accent transition-colors">Parcours</a>
+                    <a href="#contact" class="px-4 py-2 text-sm font-medium hover:text-accent transition-colors">Contact</a>
+                </nav>
+
+                <!-- Actions Right (Dark Mode + Customizer + Mobile Menu) -->
+                <div class="flex items-center space-x-3">
+                    <!-- Theme Toggle Button -->
+                    <button id="theme-toggle" aria-label="Changer le thème" class="p-2.5 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all focus:outline-none">
+                        <i class="fa-solid fa-moon text-lg hidden dark:block"></i>
+                        <i class="fa-solid fa-sun text-lg block dark:hidden"></i>
+                    </button>
+
+                    <!-- Profile Customizer Toggle Button -->
+                    <button id="customizer-open-btn" class="hidden sm:flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm shadow-lg hover:brightness-110 active:scale-95 transition-all">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Personnaliser</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" aria-label="Ouvrir le menu mobile" class="md:hidden p-2.5 rounded-xl glass text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-slate-200 dark:border-slate-800 px-4 pt-4 pb-6 space-y-3 shadow-xl">
+            <a href="#about" class="mobile-nav-link block px-4 py-2.5 rounded-lg text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">À Propos</a>
+            <a href="#skills" class="mobile-nav-link block px-4 py-2.5 rounded-lg text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Compétences</a>
+            <a href="#projects" class="mobile-nav-link block px-4 py-2.5 rounded-lg text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Projets</a>
+            <a href="#experience" class="mobile-nav-link block px-4 py-2.5 rounded-lg text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Parcours</a>
+            <a href="#contact" class="mobile-nav-link block px-4 py-2.5 rounded-lg text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800">Contact</a>
+            <button id="customizer-open-btn-mobile" class="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-accent text-white font-semibold text-sm shadow-md">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Personnaliser mon portfolio</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
+        <!-- Background Decorative Orbs -->
+        <div class="absolute top-1/4 left-10 w-72 h-72 bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                
+                <!-- Left Text Column -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800/80 backdrop-blur-md text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 border border-slate-300/50 dark:border-slate-700/50">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 -ml-4"></span>
+                        <span>Disponible pour de nouveaux projets</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+                        Bonjour, je suis <br class="hidden sm:inline"/>
+                        <span class="gradient-text" id="display-name">Alexandre Martin</span>
+                    </h1>
+
+                    <!-- Typewriter Role -->
+                    <div class="text-xl sm:text-2xl font-medium text-slate-600 dark:text-slate-300 h-10 flex items-center justify-center lg:justify-start space-x-2">
+                        <span>Je suis</span>
+                        <span id="typewriter" class="text-accent font-bold"></span>
+                        <span class="inline-block w-0.5 h-6 bg-slate-900 dark:bg-slate-100 animate-pulse"></span>
+                    </div>
+
+                    <p class="text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed" id="display-bio">
+                        Passionné par la création d'expériences web modernes, performantes et centrées sur l'utilisateur. Avec 5+ ans d'expérience dans l'écosystème JavaScript et Cloud.
+                    </p>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#projects" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-accent text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center space-x-2">
+                            <span>Voir mes projets</span>
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#contact" class="w-full sm:w-auto px-7 py-3.5 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold border border-slate-300 dark:border-slate-700 transition-all flex items-center justify-center space-x-2">
+                            <i class="fa-regular fa-envelope"></i>
+                            <span>Me contacter</span>
+                        </a>
+                        <button id="download-cv-btn" class="w-full sm:w-auto px-5 py-3.5 rounded-xl glass text-slate-600 dark:text-slate-400 hover:text-accent border border-slate-200 dark:border-slate-800 transition-all flex items-center justify-center space-x-2" title="Télécharger le CV">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                            <span>CV</span>
+                        </button>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="pt-4 flex items-center justify-center lg:justify-start space-x-4 text-slate-500 dark:text-slate-400">
+                        <a href="https://github.com" target="_blank" aria-label="GitHub" class="p-3 rounded-full glass hover:text-accent hover:scale-110 transition-all"><i class="fa-brands fa-github text-xl"></i></a>
+                        <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="p-3 rounded-full glass hover:text-accent hover:scale-110 transition-all"><i class="fa-brands fa-linkedin-in text-xl"></i></a>
+                        <a href="https://twitter.com" target="_blank" aria-label="Twitter / X" class="p-3 rounded-full glass hover:text-accent hover:scale-110 transition-all"><i class="fa-brands fa-x-twitter text-xl"></i></a>
+                        <a href="mailto:alexandre.martin@example.com" id="social-email-link" aria-label="Email" class="p-3 rounded-full glass hover:text-accent hover:scale-110 transition-all"><i class="fa-solid fa-envelope text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Right Avatar Column -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative group">
+                        <!-- Gradient Glow Backing -->
+                        <div class="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur opacity-30 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-float"></div>
+                        
+                        <!-- Image Container -->
+                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-2xl overflow-hidden glass p-3 shadow-2xl border border-slate-200/50 dark:border-slate-700/50">
+                            <img id="display-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Photo de profil" class="w-full h-full object-cover rounded-xl transition duration-500 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/3b82f6/ffffff?text=AM'">
+                            
+                            <!-- Floating Badge -->
+                            <div class="absolute bottom-6 right-6 glass px-4 py-2 rounded-xl shadow-lg border border-white/20 flex items-center space-x-2">
+                                <span class="text-xl">🚀</span>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-800 dark:text-slate-100">Fullstack Dev</p>
+                                    <p class="text-[10px] text-slate-500 dark:text-slate-400">React & Node.js</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Stats Bar Banner -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                <div class="glass p-6 rounded-2xl text-center border border-slate-200 dark:border-slate-800/80 hover:border-accent transition-all duration-300">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-accent counter" data-target="35">0</div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">Projets Livrés</p>
+                </div>
+                <div class="glass p-6 rounded-2xl text-center border border-slate-200 dark:border-slate-800/80 hover:border-accent transition-all duration-300">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-accent counter" data-target="5">0</div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">Années d'Expérience</p>
+                </div>
+                <div class="glass p-6 rounded-2xl text-center border border-slate-200 dark:border-slate-800/80 hover:border-accent transition-all duration-300">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-accent counter" data-target="24">0</div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">Clients Satisfaits</p>
+                </div>
+                <div class="glass p-6 rounded-2xl text-center border border-slate-200 dark:border-slate-800/80 hover:border-accent transition-all duration-300">
+                    <div class="text-3xl sm:text-4xl font-extrabold text-accent counter" data-target="100">0</div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">% Passion & Rigueur</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">À mon sujet</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Créateur de solutions digitales sur mesure</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Text Bio -->
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">
+                        Concevoir du code propre et des interfaces intuitives.
+                    </h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Diplômé en génie logiciel, je me suis spécialisé dans le développement d'applications web et mobiles haute performance. Mon approche combine rigueur technique, architecture scalable et sensibilité design pour créer des produits digitaux mémorables.
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Toujours en quête d'innovation, je reste à l'affût des dernières technologies web (Serverless, AI Integration, Web Performance) pour proposer des architectures modernes adaptées aux besoins métier.
+                    </p>
+
+                    <!-- Values Badges -->
+                    <div class="pt-4 flex flex-wrap gap-3">
+                        <span class="px-4 py-2 rounded-xl glass text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-code text-accent"></i>
+                            <span>Code Clean & Documenté</span>
+                        </span>
+                        <span class="px-4 py-2 rounded-xl glass text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i>
+                            <span>UX & Ergonomie</span>
+                        </span>
+                        <span class="px-4 py-2 rounded-xl glass text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-bolt text-amber-500"></i>
+                            <span>Performance & SEO</span>
+                        </span>
+                        <span class="px-4 py-2 rounded-xl glass text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                            <span>Sécurité & Robustesse</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Info Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="glass p-5 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-start space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-accent-light text-accent flex items-center justify-center shrink-0 text-xl font-bold">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Localisation</h4>
+                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">Paris, France (Full Remote disponible)</p>
+                        </div>
+                    </div>
+
+                    <div class="glass p-5 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-start space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0 text-xl font-bold">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Formation</h4>
+                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">Master Ingénierie Logicielle</p>
+                        </div>
+                    </div>
+
+                    <div class="glass p-5 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-start space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-xl font-bold">
+                            <i class="fa-solid fa-language"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Langues</h4>
+                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">Français (Natif), Anglais (C1 Courant)</p>
+                        </div>
+                    </div>
+
+                    <div class="glass p-5 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-start space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0 text-xl font-bold">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Statut</h4>
+                            <p class="text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">Freelance & CDI opportunités</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-slate-100/50 dark:bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">Compétences Techniques</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Mon Stack Technologique</p>
+            </div>
+
+            <!-- Skills Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12" id="skill-filters">
+                <button class="skill-filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all bg-accent text-white shadow-md" data-category="all">Toutes</button>
+                <button class="skill-filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800" data-category="frontend">Frontend</button>
+                <button class="skill-filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800" data-category="backend">Backend</button>
+                <button class="skill-filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800" data-category="design">Design / Outils</button>
+                <button class="skill-filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800" data-category="devops">DevOps & Cloud</button>
+            </div>
+
+            <!-- Skills Grid Container -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="skills-container">
+                <!-- Dynamically Rendered via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">Portfolio</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Mes Réalisations Récentes</p>
+            </div>
+
+            <!-- Search and Category Filters Row -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+                <!-- Search Box -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="project-search" placeholder="Rechercher une techno, un projet..." class="w-full pl-11 pr-4 py-2.5 rounded-xl glass border border-slate-200 dark:border-slate-800 focus:outline-none focus-ring-accent text-sm">
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-2 w-full md:w-auto" id="project-filters">
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-accent text-white shadow-sm" data-filter="all">Tous</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800" data-filter="web">Web</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800" data-filter="mobile">Mobile</button>
+                    <button class="project-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800" data-filter="uiux">UI/UX Design</button>
+                </div>
+            </div>
+
+            <!-- Project Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+            
+            <!-- Empty state placeholder if search gives 0 results -->
+            <div id="no-projects-msg" class="hidden text-center py-16">
+                <i class="fa-solid fa-folder-open text-5xl text-slate-400 mb-4"></i>
+                <p class="text-slate-500 font-medium">Aucun projet ne correspond à vos critères de recherche.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Modal Popup -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md transition-opacity">
+        <div class="relative w-full max-w-3xl glass rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl max-h-[90vh] flex flex-col my-auto">
+            
+            <!-- Close button -->
+            <button id="modal-close" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-slate-900/60 text-white hover:bg-slate-900 flex items-center justify-center backdrop-blur-sm transition-all focus:outline-none">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="overflow-y-auto p-6 sm:p-8 space-y-6">
+                <img id="modal-img" src="" alt="Aperçu du projet" class="w-full h-64 sm:h-80 object-cover rounded-2xl border border-slate-200 dark:border-slate-800 shadow-inner">
+                
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <span id="modal-category" class="text-xs font-bold uppercase tracking-wider text-accent px-3 py-1 rounded-full bg-accent-light">Catégorie</span>
+                        <h3 id="modal-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-2">Titre du Projet</h3>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <a id="modal-live-link" href="#" target="_blank" class="px-5 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm shadow-md hover:brightness-110 flex items-center space-x-2">
+                            <span>Démo live</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                        <a id="modal-github-link" href="#" target="_blank" class="px-5 py-2.5 rounded-xl glass text-slate-800 dark:text-slate-200 font-semibold text-sm hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center space-x-2">
+                            <i class="fa-brands fa-github text-base"></i>
+                            <span>Code</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white">À propos du projet</h4>
+                    <p id="modal-desc" class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                        Description complète du projet...
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-bold text-slate-900 dark:text-white">Technologies utilisées</h4>
+                    <div id="modal-tags" class="flex flex-wrap gap-2">
+                        <!-- Dynamic Tags -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline Section -->
+    <section id="experience" class="py-20 bg-slate-100/50 dark:bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">Mon Parcours</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Expériences & Formations</p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="flex justify-center mb-12">
+                <div class="p-1.5 glass rounded-2xl border border-slate-200 dark:border-slate-800 inline-flex space-x-1">
+                    <button id="tab-work" class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-accent text-white shadow-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Expérience Pro</span>
+                    </button>
+                    <button id="tab-edu" class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Formations</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Timeline Content Container -->
+            <div class="max-w-4xl mx-auto">
+                <!-- Work Experience Timeline -->
+                <div id="timeline-work" class="relative border-l-2 border-slate-300 dark:border-slate-800 ml-4 sm:ml-32 space-y-12">
+                    
+                    <div class="relative group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-accent ring-4 ring-slate-100 dark:ring-slate-900"></div>
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-xs font-bold uppercase tracking-wider text-accent mb-1 sm:mb-0">2023 - Présent</div>
+                        <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all ml-4 sm:ml-0">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Lead Développeur Fullstack</h3>
+                            <p class="text-sm font-semibold text-accent mb-3">TechInnovated Studio • Paris</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Supervision de l'architecture micro-services en Node.js & Next.js. Lead d'une équipe de 5 développeurs, amélioration des performances d'applications à fort trafic de +40%.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 ring-4 ring-slate-100 dark:ring-slate-900"></div>
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 sm:mb-0">2021 - 2023</div>
+                        <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all ml-4 sm:ml-0">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Développeur Front-End Senior</h3>
+                            <p class="text-sm font-semibold text-accent mb-3">Studio Digital • Lyon</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Développement de Design Systems complexes sous Tailwind CSS & Vue 3. Création de tableaux de bord analytiques en temps réel avec WebSockets et D3.js.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 ring-4 ring-slate-100 dark:ring-slate-900"></div>
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 sm:mb-0">2019 - 2021</div>
+                        <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all ml-4 sm:ml-0">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Développeur Web Fullstack Junior</h3>
+                            <p class="text-sm font-semibold text-accent mb-3">WebAgency • Bordeaux</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Conception de sites e-commerce sous React et Express. Integration d'APIs de paiement (Stripe, PayPal) et optimisation SEO.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Education Timeline (Hidden initially) -->
+                <div id="timeline-edu" class="hidden relative border-l-2 border-slate-300 dark:border-slate-800 ml-4 sm:ml-32 space-y-12">
+                    
+                    <div class="relative group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-accent ring-4 ring-slate-100 dark:ring-slate-900"></div>
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-xs font-bold uppercase tracking-wider text-accent mb-1 sm:mb-0">2017 - 2019</div>
+                        <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all ml-4 sm:ml-0">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Master Ingénierie Logicielle & Web</h3>
+                            <p class="text-sm font-semibold text-accent mb-3">Grande École d'Informatique • Paris</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Spécialisation en architectures informatiques, sécurité des SI, Cloud Computing et Design UI/UX. Major de promotion sur le projet de fin d'études.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 ring-4 ring-slate-100 dark:ring-slate-900"></div>
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 sm:mb-0">2014 - 2017</div>
+                        <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-all ml-4 sm:ml-0">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Licence Informatique & Mathématiques</h3>
+                            <p class="text-sm font-semibold text-accent mb-3">Université de Paris</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Algorithmique avancée, structures de données, bases de données relationnelles et fondamentaux du développement objet.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-accent mb-2">Me Contacter</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Un projet en tête ? Discutons-en !</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <!-- Info Side Panel -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="glass p-8 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-6">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Restons en contact</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                            Je suis à votre écoute pour concrétiser vos projets de développement web, mobile ou de refonte UI/UX. N'hésitez pas à me laisser un message !
+                        </p>
+
+                        <div class="space-y-4 pt-2">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-xl bg-accent-light text-accent flex items-center justify-center font-bold text-xl">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">Email Direct</p>
+                                    <a href="mailto:alexandre.martin@example.com" id="contact-info-email" class="text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-accent transition-colors">alexandre.martin@example.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-xl">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">Téléphone</p>
+                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">+33 6 12 34 56 78</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold text-xl">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">Adresse</p>
+                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">75001 Paris, France</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 dark:border-slate-800 pt-6">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Suivez-moi sur les réseaux</p>
+                            <div class="flex space-x-3">
+                                <a href="https://github.com" target="_blank" class="w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-accent transition-all"><i class="fa-brands fa-github"></i></a>
+                                <a href="https://linkedin.com" target="_blank" class="w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-accent transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                                <a href="https://twitter.com" target="_blank" class="w-10 h-10 rounded-xl glass hover:bg-slate-200 dark:hover:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-accent transition-all"><i class="fa-brands fa-x-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:col-span-7">
+                    <form id="contact-form" class="glass p-8 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="contact-name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">Votre Nom *</label>
+                                <input type="text" id="contact-name" required placeholder="Jean Dupont" class="w-full px-4 py-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:outline-none focus-ring-accent text-sm">
+                            </div>
+
+                            <div>
+                                <label for="contact-email" class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">Votre Email *</label>
+                                <input type="email" id="contact-email" required placeholder="jean@example.com" class="w-full px-4 py-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:outline-none focus-ring-accent text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="contact-subject" class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">Sujet *</label>
+                            <input type="text" id="contact-subject" required placeholder="Création d'un site Web e-commerce" class="w-full px-4 py-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:outline-none focus-ring-accent text-sm">
+                        </div>
+
+                        <div>
+                            <label for="contact-message" class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">Votre Message *</label>
+                            <textarea id="contact-message" rows="5" required placeholder="Décrivez brièvement vos besoins, délais et budget..." class="w-full px-4 py-3 rounded-xl bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:outline-none focus-ring-accent text-sm resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="w-full py-4 rounded-xl bg-accent text-white font-bold text-sm shadow-lg hover:brightness-110 active:scale-98 transition-all flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Envoyer le Message</span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-10 bg-slate-100 dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+                © <span id="current-year"></span> <span id="footer-name">Alexandre Martin</span>. Tous droits réservés.
+            </p>
+            <div class="flex space-x-6 text-xs text-slate-500 dark:text-slate-400">
+                <a href="#hero" class="hover:text-accent transition-colors">Retour en haut</a>
+                <span>•</span>
+                <a href="#projects" class="hover:text-accent transition-colors">Projets</a>
+                <span>•</span>
+                <a href="#contact" class="hover:text-accent transition-colors">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Customizer Drawer / Side Panel -->
+    <div id="customizer-drawer" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop overlay -->
+        <div id="customizer-backdrop" class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"></div>
+
+        <!-- Sliding Panel -->
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md glass bg-white/95 dark:bg-slate-900/95 border-l border-slate-200 dark:border-slate-800 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto shadow-2xl">
+                
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-accent text-xl"></i>
+                            <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Personnalisation</h3>
+                        </div>
+                        <button id="customizer-close-btn" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white focus:outline-none">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Modifiez vos informations ci-dessous pour personnaliser en direct le contenu et l'apparence de votre portfolio !
+                    </p>
+
+                    <!-- Form Controls for Customizer -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">Nom complet</label>
+                            <input type="text" id="cust-name" value="Alexandre Martin" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus-ring-accent">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">Phrases pour l'animation d'intitulé (séparées par une virgule)</label>
+                            <input type="text" id="cust-roles" value="Développeur Fullstack, Designer UI/UX, Expert JavaScript, Passionné Cloud" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus-ring-accent">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">Biographie Hero</label>
+                            <textarea id="cust-bio" rows="3" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus-ring-accent resize-none">Passionné par la création d'expériences web modernes, performantes et centrées sur l'utilisateur. Avec 5+ ans d'expérience dans l'écosystème JavaScript et Cloud.</textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">Adresse Email</label>
+                            <input type="email" id="cust-email" value="alexandre.martin@example.com" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus-ring-accent">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">URL Photo de Profil</label>
+                            <input type="url" id="cust-avatar" value="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-sm focus:outline-none focus-ring-accent">
+                        </div>
+
+                        <!-- Accent Color Picker Palette -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">Couleur d'accentuation</label>
+                            <div class="flex items-center space-x-3" id="color-palette-options">
+                                <button data-color="#3b82f6" class="w-8 h-8 rounded-full bg-blue-500 ring-2 ring-offset-2 ring-blue-500 focus:outline-none"></button>
+                                <button data-color="#10b981" class="w-8 h-8 rounded-full bg-emerald-500 hover:scale-110 transition-transform focus:outline-none"></button>
+                                <button data-color="#8b5cf6" class="w-8 h-8 rounded-full bg-purple-500 hover:scale-110 transition-transform focus:outline-none"></button>
+                                <button data-color="#f59e0b" class="w-8 h-8 rounded-full bg-amber-500 hover:scale-110 transition-transform focus:outline-none"></button>
+                                <button data-color="#ec4899" class="w-8 h-8 rounded-full bg-pink-500 hover:scale-110 transition-transform focus:outline-none"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                    <button id="cust-reset-btn" class="w-full py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-semibold text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        Réinitialiser aux valeurs par défaut
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-3 pointer-events-none"></div>
+
+    <script>
+        // Projects Data
+        const projectsData = [
+            {
+                id: 'proj-1',
+                title: 'E-Commerce NextGen',
+                category: 'web',
+                categoryLabel: 'Web',
+                image: 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Plateforme e-commerce haute performance avec paiement Stripe, headless CMS et microservices.',
+                fullDesc: 'Une solution e-commerce moderne conçue avec Next.js 14, Tailwind CSS et Stripe. Permet la gestion de paniers en temps réel, un moteur de recherche instantané Algolia, un back-office d\'administration d\'inventaire et une intégration de paiement internationale sécurisée.',
+                tags: ['Next.js', 'React', 'Tailwind CSS', 'Stripe', 'Node.js', 'PostgreSQL'],
+                liveUrl: 'https://example.com',
+                githubUrl: 'https://github.com'
+            },
+            {
+                id: 'proj-2',
+                title: 'Finance Tracker AI',
+                category: 'web',
+                categoryLabel: 'Web / Fintech',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Dashboard de gestion financière personnelle assisté par IA avec prédictions de budget.',
+                fullDesc: 'Application web SaaS offrant une analyse automatique des dépenses mensuelles via des modèles d\'apprentissage automatique. Graphiques interactifs D3.js, exportation de rapports PDF et catégorisation bancaire automatisée.',
+                tags: ['React', 'TypeScript', 'Python', 'FastAPI', 'Chart.js', 'Tailwind'],
+                liveUrl: 'https://example.com',
+                githubUrl: 'https://github.com'
+            },
+            {
+                id: 'proj-3',
+                title: 'Pulse Mobile Fitness',
+                category: 'mobile',
+                categoryLabel: 'Mobile',
+                image: 'https://images.unsplash.com/photo-1510519138161-58446230f71b?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Application React Native de suivi d\'entraînements et synchronisation de données de santé.',
+                fullDesc: 'Application iOS & Android de fitness permettant de composer ses séances de sport, suivre sa fréquence cardiaque via les montres connectées et échanger avec la communauté.',
+                tags: ['React Native', 'Expo', 'Redux Toolkit', 'Firebase', 'GraphQL'],
+                liveUrl: 'https://example.com',
+                githubUrl: 'https://github.com'
+            },
+            {
+                id: 'proj-4',
+                title: 'Design System SaaS UI',
+                category: 'uiux',
+                categoryLabel: 'UI/UX Design',
+                image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Système de design complet comprenant 150+ composants UI réutilisables et directives de marque.',
+                fullDesc: 'Projet d\'architecture de design system sous Figma et Storybook. Élaboration de composants accessibles (WCAG 2.1 AAA), documentation technique et librairie de tokens de design pour applications d\'entreprise.',
+                tags: ['Figma', 'Storybook', 'UI/UX', 'Tokens', 'Accessibility'],
+                liveUrl: 'https://example.com',
+                githubUrl: 'https://github.com'
+            },
+            {
+                id: 'proj-5',
+                title: 'TaskFlow Pro Kanban',
+                category: 'web',
+                categoryLabel: 'Web',
+                image: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Outil de gestion de projets en temps réel avec collaboration multi-utilisateurs et WebSockets.',
+                fullDesc: 'Plateforme de gestion de tâches inspirée de Trello et Jira. Inclut le glisser-déposer de cartes, la mise à jour instantanée par WebSocket, l\'attribution des rôles et l\'intégration Slack/GitHub.',
+                tags: ['Vue 3', 'Node.js', 'Socket.io', 'MongoDB', 'Tailwind'],
+                liveUrl: 'https://example.com',
+                githubUrl: 'https://github.com'
+            },
+            {
+                id: 'proj-6',
+                title: 'Traveler Companion App',
+                category: 'mobile',
+                categoryLabel: 'Mobile',
+                image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80',
+                shortDesc: 'Guide de voyage immersif hors-ligne avec cartes interactives et itinéraires personnalisés.',
+                fullDesc: 'Application mobile d\'accompagnement touristique intégrant des cartes vectorielles hors-ligne (Mapbox), une boussole interactive et des suggestions d\'activités générées selon les préférences des voyageurs.',
+                tags: ['Flutter', 'Dart', 'Mapbox', 'SQLite'],
+                liveUrl: 'https://example.com',
+                githubUrl: 'https://github.com'
+            }
+        ];
+
+        // Skills Data
+        const skillsData = [
+            { name: 'React & Next.js', category: 'frontend', level: 95, icon: 'fa-brands fa-react', color: 'text-sky-500' },
+            { name: 'Vue.js & Nuxt', category: 'frontend', level: 85, icon: 'fa-brands fa-vuejs', color: 'text-emerald-500' },
+            { name: 'TypeScript', category: 'frontend', level: 90, icon: 'fa-code', color: 'text-blue-500' },
+            { name: 'Tailwind CSS', category: 'frontend', level: 95, icon: 'fa-brands fa-css3-alt', color: 'text-cyan-500' },
+            { name: 'Node.js & Express', category: 'backend', level: 90, icon: 'fa-brands fa-node-js', color: 'text-green-600' },
+            { name: 'Python & FastApi/Django', category: 'backend', level: 80, icon: 'fa-brands fa-python', color: 'text-amber-500' },
+            { name: 'PostgreSQL & MongoDB', category: 'backend', level: 85, icon: 'fa-database', color: 'text-indigo-500' },
+            { name: 'Figma UI/UX', category: 'design', level: 88, icon: 'fa-brands fa-figma', color: 'text-purple-500' },
+            { name: 'Docker & Microservices', category: 'devops', level: 82, icon: 'fa-brands fa-docker', color: 'text-blue-600' },
+            { name: 'AWS & Vercel Cloud', category: 'devops', level: 85, icon: 'fa-brands fa-aws', color: 'text-orange-500' },
+            { name: 'Git & CI/CD Pipelines', category: 'devops', level: 92, icon: 'fa-brands fa-github', color: 'text-slate-700 dark:text-slate-200' }
+        ];
+
+        let state = {
+            name: "Alexandre Martin",
+            roles: ["Développeur Fullstack", "Designer UI/UX", "Expert JavaScript", "Passionné Cloud"],
+            bio: "Passionné par la création d'expériences web modernes, performantes et centrées sur l'utilisateur. Avec 5+ ans d'expérience dans l'écosystème JavaScript et Cloud.",
+            email: "alexandre.martin@example.com",
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+            primaryColor: "#3b82f6",
+            theme: localStorage.getItem('theme') || 'dark',
+            activeSkillCategory: 'all',
+            activeProjectFilter: 'all',
+            searchQuery: ''
+        };
+
+        // DOM Element Cache
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const typewriterEl = document.getElementById('typewriter');
+        const skillsContainer = document.getElementById('skills-container');
+        const projectsGrid = document.getElementById('projects-grid');
+        const projectSearch = document.getElementById('project-search');
+        const noProjectsMsg = document.getElementById('no-projects-msg');
+        const projectModal = document.getElementById('project-modal');
+        const modalClose = document.getElementById('modal-close');
+
+        function initTheme() {
+            if (state.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                state.theme = 'dark';
+            } else {
+                document.documentElement.classList.remove('dark');
+                state.theme = 'light';
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', state.theme);
+            initTheme();
+            showToast(`Thème passée en mode ${state.theme === 'dark' ? 'Sombre 🌙' : 'Clair ☀️'}`);
+        });
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        let roleIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+        let typerTimeout = null;
+
+        function typeEffect() {
+            const currentRole = state.roles[roleIdx % state.roles.length];
+            
+            if (isDeleting) {
+                typewriterEl.textContent = currentRole.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                typewriterEl.textContent = currentRole.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let typeSpeed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIdx === currentRole.length) {
+                typeSpeed = 2000; // Pause at end
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                roleIdx++;
+                typeSpeed = 500;
+            }
+
+            typerTimeout = setTimeout(typeEffect, typeSpeed);
+        }
+
+        function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = +entry.target.getAttribute('data-target');
+                        let count = 0;
+                        const speed = Math.ceil(target / 40);
+                        const updateCount = () => {
+                            count += speed;
+                            if (count < target) {
+                                entry.target.innerText = count;
+                                setTimeout(updateCount, 40);
+                            } else {
+                                entry.target.innerText = target + (target === 100 ? '' : '+');
+                            }
+                        };
+                        updateCount();
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(c => observer.observe(c));
+        }
+
+        function renderSkills() {
+            skillsContainer.innerHTML = '';
+            const filteredSkills = skillsData.filter(s => {
+                if (state.activeSkillCategory === 'all') return true;
+                return s.category === state.activeSkillCategory;
+            });
+
+            filteredSkills.forEach(skill => {
+                const item = document.createElement('div');
+                item.className = 'glass p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 hover:border-accent transition-all';
+                item.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid ${skill.icon} ${skill.color} text-xl"></i>
+                            <span class="font-bold text-slate-800 dark:text-slate-200 text-sm sm:text-base">${skill.name}</span>
+                        </div>
+                        <span class="text-xs font-bold text-accent">${skill.level}%</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-accent rounded-full transition-all duration-1000 ease-out" style="width: ${skill.level}%"></div>
+                    </div>
+                `;
+                skillsContainer.appendChild(item);
+            });
+        }
+
+        document.getElementById('skill-filters').addEventListener('click', (e) => {
+            if (e.target.classList.contains('skill-filter-btn')) {
+                document.querySelectorAll('.skill-filter-btn').forEach(btn => {
+                    btn.className = 'skill-filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800';
+                });
+                e.target.className = 'skill-filter-btn px-5 py-2 rounded-xl text-sm font-semibold transition-all bg-accent text-white shadow-md';
+                state.activeSkillCategory = e.target.getAttribute('data-category');
+                renderSkills();
+            }
+        });
+
+        function renderProjects() {
+            projectsGrid.innerHTML = '';
+            
+            const filteredProjects = projectsData.filter(p => {
+                const matchesFilter = state.activeProjectFilter === 'all' || p.category === state.activeProjectFilter;
+                const matchesSearch = p.title.toLowerCase().includes(state.searchQuery.toLowerCase()) || 
+                                      p.tags.some(t => t.toLowerCase().includes(state.searchQuery.toLowerCase())) ||
+                                      p.shortDesc.toLowerCase().includes(state.searchQuery.toLowerCase());
+                return matchesFilter && matchesSearch;
+            });
+
+            if (filteredProjects.length === 0) {
+                noProjectsMsg.classList.remove('hidden');
+            } else {
+                noProjectsMsg.classList.add('hidden');
+            }
+
+            filteredProjects.forEach(proj => {
+                const card = document.createElement('div');
+                card.className = 'glass rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 group hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between shadow-sm hover:shadow-xl';
+                
+                const tagsHtml = proj.tags.slice(0, 3).map(t => `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-200/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300">${t}</span>`).join('');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="relative overflow-hidden h-48 sm:h-52">
+                            <img src="${proj.image}" alt="${proj.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-3">
+                                <button onclick="openModal('${proj.id}')" class="px-4 py-2 rounded-xl bg-white text-slate-900 font-bold text-xs shadow-lg hover:bg-slate-100 transition-colors">
+                                    Aperçu détaillé
+                                </button>
+                            </div>
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full glass text-[10px] font-bold text-accent uppercase tracking-wider">${proj.categoryLabel}</span>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-accent transition-colors">${proj.title}</h3>
+                            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm line-clamp-2 leading-relaxed">${proj.shortDesc}</p>
+                            <div class="flex flex-wrap gap-1.5 pt-1">
+                                ${tagsHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-200/50 dark:border-slate-800/50 mt-4">
+                        <button onclick="openModal('${proj.id}')" class="text-xs font-bold text-accent hover:underline flex items-center space-x-1">
+                            <span>Détails & Code</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                        <div class="flex space-x-2">
+                            <a href="${proj.liveUrl}" target="_blank" class="p-2 rounded-lg text-slate-400 hover:text-accent transition-colors" title="Démo Live"><i class="fa-solid fa-arrow-up-right-from-square text-sm"></i></a>
+                            <a href="${proj.githubUrl}" target="_blank" class="p-2 rounded-lg text-slate-400 hover:text-accent transition-colors" title="Code Source"><i class="fa-brands fa-github text-sm"></i></a>
+                        </div>
+                    </div>
+                `;
+                projectsGrid.appendChild(card);
+            });
+        }
+
+        // Project Filtering Events
+        document.getElementById('project-filters').addEventListener('click', (e) => {
+            if (e.target.classList.contains('project-filter-btn')) {
+                document.querySelectorAll('.project-filter-btn').forEach(btn => {
+                    btn.className = 'project-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all glass text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800';
+                });
+                e.target.className = 'project-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-accent text-white shadow-sm';
+                state.activeProjectFilter = e.target.getAttribute('data-filter');
+                renderProjects();
+            }
+        });
+
+        projectSearch.addEventListener('input', (e) => {
+            state.searchQuery = e.target.value;
+            renderProjects();
+        });
+
+        // Project Modal Logic
+        window.openModal = function(id) {
+            const proj = projectsData.find(p => p.id === id);
+            if (!proj) return;
+
+            document.getElementById('modal-img').src = proj.image;
+            document.getElementById('modal-title').textContent = proj.title;
+            document.getElementById('modal-category').textContent = proj.categoryLabel;
+            document.getElementById('modal-desc').textContent = proj.fullDesc;
+            document.getElementById('modal-live-link').href = proj.liveUrl;
+            document.getElementById('modal-github-link').href = proj.githubUrl;
+
+            const tagsContainer = document.getElementById('modal-tags');
+            tagsContainer.innerHTML = proj.tags.map(t => `<span class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${t}</span>`).join('');
+
+            projectModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+
+        modalClose.addEventListener('click', () => {
+            projectModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        projectModal.addEventListener('click', (e) => {
+            if (e.target === projectModal) {
+                projectModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        const tabWork = document.getElementById('tab-work');
+        const tabEdu = document.getElementById('tab-edu');
+        const timelineWork = document.getElementById('timeline-work');
+        const timelineEdu = document.getElementById('timeline-edu');
+
+        tabWork.addEventListener('click', () => {
+            tabWork.className = 'px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-accent text-white shadow-sm flex items-center space-x-2';
+            tabEdu.className = 'px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center space-x-2';
+            timelineWork.classList.remove('hidden');
+            timelineEdu.classList.add('hidden');
+        });
+
+        tabEdu.addEventListener('click', () => {
+            tabEdu.className = 'px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-accent text-white shadow-sm flex items-center space-x-2';
+            tabWork.className = 'px-6 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center space-x-2';
+            timelineEdu.classList.remove('hidden');
+            timelineWork.classList.add('hidden');
+        });
+
+        const contactForm = document.getElementById('contact-form');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Envoi en cours...</span>`;
+
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i><span>Envoyer le Message</span>`;
+                contactForm.reset();
+                showToast('Votre message a bien été envoyé avec succès ! 🚀', 'success');
+            }, 1200);
+        });
+
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto toast-enter glass px-5 py-3.5 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 flex items-center space-x-3 text-slate-800 dark:text-slate-100 text-sm font-bold';
+            
+            let icon = 'fa-circle-info text-accent';
+            if (type === 'success') icon = 'fa-circle-check text-emerald-500';
+
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-lg"></i>
+                <span>${message}</span>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // CV Download Simulation
+        document.getElementById('download-cv-btn').addEventListener('click', () => {
+            showToast('Téléchargement du CV d\'Alexandre Martin lancé 📄', 'success');
+        });
+
+        const customizerDrawer = document.getElementById('customizer-drawer');
+        const customizerOpenBtn = document.getElementById('customizer-open-btn');
+        const customizerOpenBtnMobile = document.getElementById('customizer-open-btn-mobile');
+        const customizerCloseBtn = document.getElementById('customizer-close-btn');
+        const customizerBackdrop = document.getElementById('customizer-backdrop');
+
+        function toggleCustomizer(open) {
+            if (open) {
+                customizerDrawer.classList.remove('hidden');
+            } else {
+                customizerDrawer.classList.add('hidden');
+            }
+        }
+
+        customizerOpenBtn.addEventListener('click', () => toggleCustomizer(true));
+        customizerOpenBtnMobile.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            toggleCustomizer(true);
+        });
+        customizerCloseBtn.addEventListener('click', () => toggleCustomizer(false));
+        customizerBackdrop.addEventListener('click', () => toggleCustomizer(false));
+
+        // Sync inputs with DOM & state live
+        const custNameInput = document.getElementById('cust-name');
+        const custRolesInput = document.getElementById('cust-roles');
+        const custBioInput = document.getElementById('cust-bio');
+        const custEmailInput = document.getElementById('cust-email');
+        const custAvatarInput = document.getElementById('cust-avatar');
+
+        function updateProfileLive() {
+            state.name = custNameInput.value || "Alexandre Martin";
+            state.bio = custBioInput.value || "";
+            state.email = custEmailInput.value || "alexandre.martin@example.com";
+            state.avatar = custAvatarInput.value || "";
+
+            if (custRolesInput.value.trim().length > 0) {
+                state.roles = custRolesInput.value.split(',').map(r => r.trim()).filter(r => r.length > 0);
+            }
+
+            // Update DOM Elements
+            document.getElementById('display-name').textContent = state.name;
+            document.getElementById('nav-brand-name').innerHTML = `${state.name.split(' ')[0]}<span class="text-accent" id="nav-brand-dot">.</span>`;
+            document.getElementById('logo-icon').textContent = state.name.split(' ').map(n => n[0]).join('');
+            document.getElementById('display-bio').textContent = state.bio;
+            document.getElementById('display-avatar').src = state.avatar;
+            document.getElementById('contact-info-email').textContent = state.email;
+            document.getElementById('contact-info-email').href = `mailto:${state.email}`;
+            document.getElementById('social-email-link').href = `mailto:${state.email}`;
+            document.getElementById('footer-name').textContent = state.name;
+            document.getElementById('doc-title').textContent = `${state.name} - Portfolio`;
+        }
+
+        custNameInput.addEventListener('input', updateProfileLive);
+        custRolesInput.addEventListener('input', () => {
+            updateProfileLive();
+            charIdx = 0;
+            roleIdx = 0;
+            isDeleting = false;
+        });
+        custBioInput.addEventListener('input', updateProfileLive);
+        custEmailInput.addEventListener('input', updateProfileLive);
+        custAvatarInput.addEventListener('input', updateProfileLive);
+
+        // Accent Color Switching
+        document.getElementById('color-palette-options').addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const hex = e.target.getAttribute('data-color');
+                setPrimaryColor(hex);
+            }
+        });
+
+        function setPrimaryColor(hex) {
+            state.primaryColor = hex;
+            document.documentElement.style.setProperty('--accent-hex', hex);
+            document.documentElement.style.setProperty('--accent-hover', hex);
+            document.documentElement.style.setProperty('--accent-light', hex + '25');
+            showToast('Couleur principale mise à jour 🎨');
+        }
+
+        // Reset Customizer
+        document.getElementById('cust-reset-btn').addEventListener('click', () => {
+            custNameInput.value = "Alexandre Martin";
+            custRolesInput.value = "Développeur Fullstack, Designer UI/UX, Expert JavaScript, Passionné Cloud";
+            custBioInput.value = "Passionné par la création d'expériences web modernes, performantes et centrées sur l'utilisateur. Avec 5+ ans d'expérience dans l'écosystème JavaScript et Cloud.";
+            custEmailInput.value = "alexandre.martin@example.com";
+            custAvatarInput.value = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80";
+            setPrimaryColor('#3b82f6');
+            updateProfileLive();
+            showToast('Portfolio réinitialisé aux valeurs d\'origine !');
+        });
+
+        window.onload = function() {
+            initTheme();
+            typeEffect();
+            initCounters();
+            renderSkills();
+            renderProjects();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        };
+    </script>
+</body>
+</html>
